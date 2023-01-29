@@ -36,7 +36,9 @@ namespace Business.Constants
 		public static string RentalDeleted = "KİRALAMA SİLİNDİ.";
 		public static string RentalUpdated = "KİRALAMA GÜNCELLENDİ.";
 		public static string RentalInvalidRequest = "KİRALAMA GEÇERSİZ";
-
-
+		public static string CarImagesAdded = "ARAÇ FOTOSU EKLENDİ.";
+		public static string CarImagesDeleted = "ARAÇ FOTOSU SİLİNDİ.";
+		public static string CarImagesUpdated = "ARAÇ FOTOSU GÜNCELLENDİ.";
+		public static string CarImagesListed = "ARAÇ FOTOLARI LİSTELENDİ";
 	}
 }

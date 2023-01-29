@@ -36,6 +36,9 @@ namespace Business.DependencyResolvers.Autofac
 			builder.RegisterType<UserManager>().As<IUserService>().SingleInstance();
 			builder.RegisterType<EfUserDal>().As<IUserDal>().SingleInstance();
 
+			builder.RegisterType<CarImagesManager>().As<ICarImagesService>().SingleInstance();
+			builder.RegisterType<EfCarImagesDal>().As<ICarImagesDal>().SingleInstance();
+
 			var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
 			builder.RegisterAssemblyTypes(assembly).AsImplementedInterfaces()

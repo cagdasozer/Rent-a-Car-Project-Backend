@@ -7,19 +7,19 @@ namespace WebAPI.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	public class BrandsController : ControllerBase
+	public class CarImagesController : ControllerBase
 	{
-		IBrandService _brandService;
+		ICarImagesService _carImagesService;
 
-		public BrandsController(IBrandService brandService)
+		public CarImagesController(ICarImagesService carImagesService)
 		{
-			_brandService = brandService;
+			_carImagesService = carImagesService;
 		}
 
 		[HttpGet("GetAll")]
-		public IActionResult GetAll() 
+		public IActionResult GetAll()
 		{
-			var result = _brandService.GetAll();
+			var result = _carImagesService.GetAll();
 			if (result.Success)
 			{
 				return Ok(result);
@@ -27,10 +27,10 @@ namespace WebAPI.Controllers
 			return BadRequest(result);
 		}
 
-		[HttpGet("GetById")]
-		public IActionResult GetById(int id) 
+		[HttpGet("GetByCarId")]
+		public IActionResult GetByCarId(int carImagesId)
 		{
-			var result = _brandService.GetById(id);
+			var result = _carImagesService.GetByCarId(carImagesId);
 			if (result.Success)
 			{
 				return Ok(result);
@@ -39,9 +39,9 @@ namespace WebAPI.Controllers
 		}
 
 		[HttpPost("Add")]
-		public IActionResult Add(Brand brand)
+		public IActionResult Add(CarImages carImages)
 		{
-			var result = _brandService.Add(brand);
+			var result = _carImagesService.Add(carImages);
 			if (result.Success)
 			{
 				return Ok(result);
@@ -50,9 +50,9 @@ namespace WebAPI.Controllers
 		}
 
 		[HttpPost("Delete")]
-		public IActionResult Delete(Brand brand)
+		public IActionResult Delete(CarImages carImages)
 		{
-			var result = _brandService.Delete(brand);
+			var result = _carImagesService.Delete(carImages);
 			if (result.Success)
 			{
 				return Ok(result);
@@ -61,9 +61,9 @@ namespace WebAPI.Controllers
 		}
 
 		[HttpPost("Update")]
-		public IActionResult Update(Brand brand)
+		public IActionResult Update(CarImages carImages)
 		{
-			var result = _brandService.Update(brand);
+			var result = _carImagesService.Update(carImages);
 			if (result.Success)
 			{
 				return Ok(result);

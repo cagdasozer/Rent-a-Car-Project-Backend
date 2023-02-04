@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
-	public class ColorManager : IColorService
+    public class ColorManager : IColorService
 	{
 		IColorDal _colorDal;
 

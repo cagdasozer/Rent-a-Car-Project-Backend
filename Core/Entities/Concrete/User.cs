@@ -1,4 +1,4 @@
-﻿using Entities.Abstract;
+﻿using Core.Entities.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ namespace Entities.Concrete
 {
 	public class User : IEntity
 	{
-		public int UserId { get; set; }
+		public int Id { get; set; }
 
 		public string FirstName { get; set; }
 
@@ -17,6 +17,10 @@ namespace Entities.Concrete
 
 		public string Email { get; set; }
 
-		public string Password { get; set; }
+		public byte[] PasswordHash { get; set; }
+
+		public byte[] PasswordSlat { get; set; }
+
+		public bool Status { get; set; }
 	}
 }

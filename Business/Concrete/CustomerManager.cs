@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
-	public class CustomerManager : ICustomerService
+    public class CustomerManager : ICustomerService
 	{
 		ICustomerDal _customerDal;
 

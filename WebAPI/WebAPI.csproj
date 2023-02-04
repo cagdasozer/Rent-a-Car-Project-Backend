@@ -15,4 +15,14 @@
     <ProjectReference Include="..\Business\Business.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\CarImages\AUDİ.jpg" />
+    <None Include="wwwroot\CarImages\C3.jpg" />
+    <None Include="wwwroot\CarImages\CLİO.jpg" />
+    <None Include="wwwroot\CarImages\DUSTER.jpg" />
+    <None Include="wwwroot\CarImages\FİESTA.jpg" />
+    <None Include="wwwroot\CarImages\OCTAVİA.jpg" />
+    <None Include="wwwroot\CarImages\PUNTO.jpg" />
+  </ItemGroup>
+
 </Project>

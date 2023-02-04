@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.Abstract
+namespace Core.Utilities.Security.JWT
 {
-    public interface IEntity
-    {
-    }
+	public class TokenOption
+	{
+	}
 }

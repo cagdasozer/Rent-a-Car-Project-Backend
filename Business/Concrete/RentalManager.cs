@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
-	public class RentalManager : IRentalService
+    public class RentalManager : IRentalService
 	{
 		IRentalDal _rentalDal;
 

@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
@@ -25,6 +26,7 @@ namespace Business.Concrete
 			_carDal = carDal;
 		}
 
+		[SecuredOperation("admin,moderator")]
 		[ValidationAspect(typeof(CarValidator))]
 		public IResult Add(Car car)
 		{
@@ -32,12 +34,14 @@ namespace Business.Concrete
 			return new SuccessResult(Messages.CarAdded);
 		}
 
+		[SecuredOperation("admin,moderator")]
 		public IResult Delete(Car car)
 		{
 			_carDal.Delete(car);
 			return new SuccessResult(Messages.CarDeleted);
 		}
 
+		[SecuredOperation("admin,moderator")]
 		public IDataResult<List<Car>> GetAll()
 		{
 			if (DateTime.Now.Hour == 00)
@@ -47,21 +51,25 @@ namespace Business.Concrete
 			return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.CarsListed);
 		}
 
+		[SecuredOperation("admin,moderator,customer")]
 		public IDataResult<List<CarDetailDto>> GetCarDetails()
 		{
 			return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(), Messages.CarsListed);
 		}
 
+		[SecuredOperation("admin,moderator,customer")]
 		public IDataResult<List<Car>> GetCarsByBrandId(int id)
 		{
 			return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.BrandId == id));
 		}
 
+		[SecuredOperation("admin,moderator,customer")]
 		public IDataResult<List<Car>> GetCarsByColorId(int id)
 		{
 			return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ColorId == id));
 		}
 
+		[SecuredOperation("admin,moderator")]
 		public IResult Update(Car car)
 		{
 			_carDal.Update(car);

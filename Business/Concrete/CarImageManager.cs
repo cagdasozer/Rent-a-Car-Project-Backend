@@ -16,6 +16,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.IO;
 using Business.Constants;
+using Business.BusinessAspects.Autofac;
 
 namespace Business.Concrete
 {
@@ -30,8 +31,9 @@ namespace Business.Concrete
 			_fileHelper = fileHelper;
 		}
 
+		//[SecuredOperation("admin,moderator")]
 		[ValidationAspect(typeof(CarImagesValidator))]
-		public IResult Add(CarImage carImage, IFormFile file)
+		public IResult Add( CarImage carImage, IFormFile file)
 		{
 			IResult result = BusinessRules.Run(CheckIfCarImageLimit(carImage.CarId));
 			if (result != null)
@@ -44,6 +46,7 @@ namespace Business.Concrete
 			return new SuccessResult(Messages.CarImagesAdded);
 		}
 
+		[SecuredOperation("admin,moderator")]
 		public IResult Delete(CarImage carImage, IFormFile file)
 		{
 			_fileHelper.Delete(PathConstants.ImagesPath + carImage.ImagePath);
@@ -52,6 +55,7 @@ namespace Business.Concrete
 			return new SuccessResult(Messages.CarImagesDeleted);
 		}
 
+		[SecuredOperation("admin,moderator")]
 		public IResult Update(CarImage carImage, IFormFile file)
 		{
 			carImage.ImagePath = _fileHelper.Update(file, PathConstants.ImagesPath + carImage.ImagePath, PathConstants.ImagesPath);
@@ -59,17 +63,20 @@ namespace Business.Concrete
 			_carImageDal.Update(carImage);
 			return new SuccessResult(Messages.CarImagesUpdated);
 		}
-
+		
+		[SecuredOperation("admin,moderator,customer")]
 		public IDataResult<List<CarImage>> GetAll()
 		{
 			return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(), Messages.CarImagesListed);
 		}
 
+		[SecuredOperation("admin,moderator,customer")]
 		public IDataResult<CarImage> GetByImageId(int carImageId)
 		{
 			return new SuccessDataResult<CarImage>(_carImageDal.Get(c => c.Id == carImageId));
 		}
 
+		[SecuredOperation("admin,moderator,customer")]
 		public IDataResult<List<CarImage>> GetImagesByCarId(int carId)
 		{
 			var result = BusinessRules.Run(CheckIfCarImage(carId));

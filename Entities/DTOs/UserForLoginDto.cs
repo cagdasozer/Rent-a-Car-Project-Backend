@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.Concrete
+namespace Entities.DTOs
 {
-    public class Brand : IEntity
-    {
-        public int Id { get; set; }
+	public class UserForLoginDto : IDto
+	{
+		public string Email { get; set; }
 
-        public string BrandName { get; set; }
-    }
+		public string Password { get; set; }
+	}
 }

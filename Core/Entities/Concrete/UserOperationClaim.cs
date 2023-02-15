@@ -2,7 +2,7 @@
 
 namespace Entities.Concrete
 {
-	class UserOperationClaim :IEntity
+	public class UserOperationClaim : IEntity
 	{
 		public int Id { get; set; }
 

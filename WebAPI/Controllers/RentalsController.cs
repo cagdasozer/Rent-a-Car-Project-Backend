@@ -39,7 +39,6 @@ namespace WebAPI.Controllers
 			return BadRequest(result);
 		}
 
-		//SORRRR
 		[HttpPost("Delete")]
 		public IActionResult Delete(Rental rental)
 		{

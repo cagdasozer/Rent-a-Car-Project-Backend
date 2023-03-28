@@ -9,21 +9,28 @@ using System.Threading.Tasks;
 
 namespace Business.Abstract
 {
-    public interface ICarService
-    {
-        IDataResult<List<Car>> GetAll();
+	public interface ICarService
+	{
+		IDataResult<List<Car>> GetAll();
 
-        IDataResult<List<Car>> GetCarsByBrandId(int id);
+		IDataResult<List<Car>> GetCarsByBrandId(int brandId);
 
-		IDataResult<List<Car>> GetCarsByColorId(int id);
+		IDataResult<List<Car>> GetCarsByColorId(int colorId);
 
-        IDataResult<List<CarDetailDto>> GetCarDetails();
+		IDataResult<List<CarDetailDto>> GetCarDetails();
 
-        IResult Add(Car car);
+		IDataResult<List<Car>> GetCarsById(int carId);
 
-        IResult Delete(Car car);
+		IDataResult<List<CarDetailDto>> GetCarDetailsByBrandId(int brandId);
 
-        IResult Update(Car car);
+		IDataResult<List<CarDetailDto>> GetCarDetailsByColorId(int colorId);
 
-    }
+		IDataResult<List<CarDetailDto>> GetCarDetailsByCarId(int carId);
+
+		IResult Add(Car car);
+
+		IResult Delete(Car car);
+
+		IResult Update(Car car);
+	}
 }

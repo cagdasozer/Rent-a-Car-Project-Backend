@@ -17,13 +17,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\CarImages\AUDİ.jpg" />
-    <None Include="wwwroot\CarImages\C3.jpg" />
-    <None Include="wwwroot\CarImages\CLİO.jpg" />
-    <None Include="wwwroot\CarImages\DUSTER.jpg" />
-    <None Include="wwwroot\CarImages\FİESTA.jpg" />
-    <None Include="wwwroot\CarImages\OCTAVİA.jpg" />
-    <None Include="wwwroot\CarImages\PUNTO.jpg" />
+    <None Include="wwwroot\Uploads\CarImages\AUDİ.jpg" />
+    <None Include="wwwroot\Uploads\CarImages\C3.jpg" />
+    <None Include="wwwroot\Uploads\CarImages\CLİO.jpg" />
+    <None Include="wwwroot\Uploads\CarImages\DUSTER.jpg" />
+    <None Include="wwwroot\Uploads\CarImages\FİESTA.jpg" />
+    <None Include="wwwroot\Uploads\CarImages\OCTAVİA.jpg" />
+    <None Include="wwwroot\Uploads\CarImages\PUNTO.jpg" />
   </ItemGroup>
 
 </Project>

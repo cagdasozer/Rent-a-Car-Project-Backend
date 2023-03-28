@@ -26,7 +26,7 @@ namespace Business.Concrete
 			_carDal = carDal;
 		}
 
-		[SecuredOperation("admin,moderator")]
+		//[SecuredOperation("admin,moderator")]
 		[ValidationAspect(typeof(CarValidator))]
 		public IResult Add(Car car)
 		{
@@ -34,42 +34,59 @@ namespace Business.Concrete
 			return new SuccessResult(Messages.CarAdded);
 		}
 
-		[SecuredOperation("admin,moderator")]
+		//[SecuredOperation("admin,moderator")]
 		public IResult Delete(Car car)
 		{
 			_carDal.Delete(car);
 			return new SuccessResult(Messages.CarDeleted);
 		}
 
-		[SecuredOperation("admin,moderator")]
+		//[SecuredOperation("admin,moderator")]
 		public IDataResult<List<Car>> GetAll()
 		{
-			if (DateTime.Now.Hour == 00)
-			{
-				return new ErrorDataResult<List<Car>>(Messages.MaintenanceTime);
-			}
 			return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.CarsListed);
 		}
 
-		[SecuredOperation("admin,moderator,customer")]
+		//[SecuredOperation("admin,moderator,customer")]
 		public IDataResult<List<CarDetailDto>> GetCarDetails()
 		{
 			return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(), Messages.CarsListed);
 		}
 
-		[SecuredOperation("admin,moderator,customer")]
-		public IDataResult<List<Car>> GetCarsByBrandId(int id)
+		//[SecuredOperation("admin,moderator,customer")]
+		public IDataResult<List<Car>> GetCarsByBrandId(int brandId)
 		{
-			return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.BrandId == id));
+			return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.BrandId == brandId), Messages.CarsListed);
 		}
 
-		[SecuredOperation("admin,moderator,customer")]
-		public IDataResult<List<Car>> GetCarsByColorId(int id)
+		//[SecuredOperation("admin,moderator,customer")]
+		public IDataResult<List<Car>> GetCarsByColorId(int colorId)
 		{
-			return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ColorId == id));
+			return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ColorId == colorId), Messages.CarsListed);
 		}
 
-		[SecuredOperation("admin,moderator")]
+		//[SecuredOperation("admin,moderator,customer")]
+		public IDataResult<List<Car>> GetCarsById(int carId)
+		{
+			return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.Id == carId), Messages.CarsListed);
+		}
+
+		public IDataResult<List<CarDetailDto>> GetCarDetailsByCarId(int carId)
+		{
+			return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetailsByCarId(carId), Messages.Listed);
+		}
+
+		public IDataResult<List<CarDetailDto>> GetCarDetailsByColorId(int colorId)
+		{
+			return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetailsByColorId(colorId), Messages.Listed);
+		}
+
+		public IDataResult<List<CarDetailDto>> GetCarDetailsByBrandId(int brandId)
+		{
+			return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetailsByBrandId(brandId), Messages.Listed);
+		}
+
+		//[SecuredOperation("admin,moderator")]
 		public IResult Update(Car car)
 		{
 			_carDal.Update(car);

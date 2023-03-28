@@ -23,25 +23,25 @@ namespace Business.Concrete
 			_userDal = userDal;
 		}
 
-		[SecuredOperation("admin")]
+		//[SecuredOperation("admin")]
 		public List<OperationClaim> GetClaims(User user)
 		{
 			return _userDal.GetClaims(user);
 		}
 
-		[SecuredOperation("admin,moderator")]
+		//[SecuredOperation("admin,moderator")]
 		public User GetByMail(string email)
 		{
 			return _userDal.Get(u => u.Email == email);
 		}
 
-		[SecuredOperation("admin,moderator")]
+		//[SecuredOperation("admin,moderator")]
 		public IDataResult<List<User>> GetAll()
 		{
 			return new SuccessDataResult<List<User>>(_userDal.GetAll(), Messages.UsersListed);
 		}
 
-		[SecuredOperation("admin,moderator")]
+		//[SecuredOperation("admin,moderator")]
 		[ValidationAspect(typeof(UserValidator))]
 		public void Add(User user)
 		{
@@ -49,14 +49,14 @@ namespace Business.Concrete
 			new SuccessResult(Messages.UserAdded);
 		}
 
-		[SecuredOperation("admin")]
+		//[SecuredOperation("admin")]
 		public IResult Update(User user)
 		{
 			_userDal.Update(user);
 			return new SuccessResult(Messages.UserUpdated);
 		}
 
-		[SecuredOperation("admin")]
+		//[SecuredOperation("admin")]
 		public IResult Delete(int id)
 		{
 			var delete = _userDal.Get(u => u.Id == id);

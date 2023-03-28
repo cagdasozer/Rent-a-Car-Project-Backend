@@ -23,7 +23,7 @@ namespace Business.Concrete
 			_colorDal = colorDal;
 		}
 
-		[SecuredOperation("admin,moderator")]
+		//[SecuredOperation("admin,moderator")]
 		[ValidationAspect(typeof(ColorValidator))]
 		public IResult Add(Color color)
 		{
@@ -31,26 +31,26 @@ namespace Business.Concrete
 			return new SuccessResult(Messages.ColorAdded);
 		}
 
-		[SecuredOperation("admin,moderator")]
+		//[SecuredOperation("admin,moderator")]
 		public IResult Delete(Color color)
 		{
 			_colorDal.Delete(color);
-			return new SuccessResult(Messages.ColorAdded);
+			return new SuccessResult(Messages.ColorDeleted);
 		}
 
-		[SecuredOperation("admin,moderator,customer")]
+		//[SecuredOperation("admin,moderator,customer")]
 		public IDataResult<List<Color>> GetAll()
 		{
 			return new SuccessDataResult<List<Color>>(_colorDal.GetAll(), Messages.ColorsListed);
 		}
 
-		[SecuredOperation("admin,moderator,customer")]
+		//[SecuredOperation("admin,moderator,customer")]
 		public IDataResult<Color> GetById(int colorId)
 		{
-			return new SuccessDataResult<Color>(_colorDal.Get(c => c.Id == colorId), Messages.ColorsListed);
+			return new SuccessDataResult<Color>(_colorDal.Get(c => c.ColorId == colorId), Messages.ColorsListed);
 		}
 
-		[SecuredOperation("admin,moderator")]
+		//[SecuredOperation("admin,moderator")]
 		public IResult Update(Color color)
 		{
 			_colorDal.Update(color);

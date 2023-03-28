@@ -25,6 +25,7 @@ namespace WebAPI
 			builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 			builder.Host.ConfigureContainer<ContainerBuilder>(builder => builder.RegisterModule(new AutofacBusinessModule()));
 
+			builder.Services.AddCors();
 
 			var tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
@@ -43,35 +44,13 @@ namespace WebAPI
 			});
 
 
-			//builder.Services.AddAuthentication(options =>
-			//{
-			//	options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-			//	options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-			//	options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-			//}).AddJwtBearer(o =>
-			//{
-			//	o.TokenValidationParameters = new TokenValidationParameters
-			//	{
-			//		ValidIssuer = builder.Configuration["Jwt:Issuer"],
-			//		ValidAudience = builder.Configuration["Jwt:Audience"],
-			//		IssuerSigningKey = new SymmetricSecurityKey
-			//		(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
-			//		ValidateIssuer = true,
-			//		ValidateAudience = true,
-			//		ValidateLifetime = false,
-			//		ValidateIssuerSigningKey = true
-			//	};
-			//});
-
 			builder.Services.AddDependencyResolvers(new ICoreModule[]
 			{
 				new CoreModule()
 			});
 
-			//builder.Services.AddAuthorization();
 
 
-			
 			// Add services to the container.
 
 			builder.Services.AddControllers();
@@ -91,11 +70,14 @@ namespace WebAPI
 				app.UseSwaggerUI();
 			}
 
+			app.UseStaticFiles();
+
+			app.UseCors(builder => builder.WithOrigins("http://localhost:56582").AllowAnyHeader());
+
 			app.UseHttpsRedirection();
 
-			app.UseAuthentication();
-
-			app.UseAuthorization();
+			app.UseAuthentication();//girmek için key (kimlik doðrulama)
+			app.UseAuthorization(); //girdikten sonra ne yapabiliriz (yetki)
 
 			app.MapControllers();
 

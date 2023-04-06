@@ -3,6 +3,7 @@ using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -14,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
-    public class ColorManager : IColorService
+	public class ColorManager : IColorService
 	{
 		IColorDal _colorDal;
 
@@ -23,8 +24,7 @@ namespace Business.Concrete
 			_colorDal = colorDal;
 		}
 
-		//[SecuredOperation("admin,moderator")]
-		[ValidationAspect(typeof(ColorValidator))]
+		//[SecuredOperation("admin")]
 		public IResult Add(Color color)
 		{
 			_colorDal.Add(color);
@@ -45,9 +45,14 @@ namespace Business.Concrete
 		}
 
 		//[SecuredOperation("admin,moderator,customer")]
-		public IDataResult<Color> GetById(int colorId)
+		public IDataResult<Color> GetById(int id)
 		{
-			return new SuccessDataResult<Color>(_colorDal.Get(c => c.ColorId == colorId), Messages.ColorsListed);
+			return new SuccessDataResult<Color>(_colorDal.Get(c => c.Id == id), Messages.ColorsListed);
+		}
+
+		public IDataResult<Color> GetColorById(int id)
+		{
+			return new SuccessDataResult<Color>(_colorDal.Get(c => c.Id == id));
 		}
 
 		//[SecuredOperation("admin,moderator")]
@@ -58,3 +63,5 @@ namespace Business.Concrete
 		}
 	}
 }
+
+

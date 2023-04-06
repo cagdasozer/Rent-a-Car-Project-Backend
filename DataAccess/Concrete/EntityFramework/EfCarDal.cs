@@ -20,82 +20,20 @@ namespace DataAccess.Concrete.EntityFramework
 		{
 			using (ReCarContext context = new ReCarContext())
 			{
-				var result = from car in context.Cars
-							 join brand in context.Brands
-							 on car.BrandId equals brand.BrandId
-							 join color in context.Colors on car.ColorId equals color.ColorId
+				var result = from c in context.Cars
+							 join b in context.Brands on c.BrandId equals b.Id
+							 join a in context.Colors on c.ColorId equals a.Id
 							 select new CarDetailDto
 							 {
-								 CarId = car.Id,
-								 CarName = car.CarName,
-								 BrandName = brand.BrandName,
-								 ColorName = color.ColorName,
-								 DailyPrice = car.DailyPrice,
-								 ModelYear = car.ModelYear,
-							 };
-				return result.ToList();
-			}
-		}
-
-		public List<CarDetailDto> GetCarDetailsByBrandId(int brandId)
-		{
-			using (ReCarContext context = new ReCarContext())
-			{
-				var result = from car in context.Cars
-							 join brand in context.Brands on car.BrandId equals brand.BrandId
-							 join color in context.Colors on car.ColorId equals color.ColorId
-							 where car.BrandId == brandId
-							 select new CarDetailDto
-							 {
-								 CarId = car.Id,
-								 BrandName = brand.BrandName,
-								 CarName = car.CarName,
-								 ColorName = color.ColorName,
-								 DailyPrice = car.DailyPrice,
-								 ModelYear = car.ModelYear,
-
-							 };
-				return result.ToList();
-			}
-		}
-
-		public List<CarDetailDto> GetCarDetailsByColorId(int colorId)
-		{
-			using (ReCarContext context = new ReCarContext())
-			{
-				var result = from car in context.Cars
-							 join brand in context.Brands on car.BrandId equals brand.BrandId
-							 join color in context.Colors on car.ColorId equals color.ColorId
-							 where car.ColorId == colorId
-							 select new CarDetailDto
-							 {
-								 CarId = car.Id,
-								 BrandName = brand.BrandName,
-								 CarName = car.CarName,
-								 ColorName = color.ColorName,
-								 DailyPrice = car.DailyPrice,
-								 ModelYear = car.ModelYear,
-							 };
-				return result.ToList();
-			}
-		}
-
-		public List<CarDetailDto> GetCarDetailsByCarId(int carId)
-		{
-			using (ReCarContext context = new ReCarContext())
-			{
-				var result = from car in context.Cars
-							 join brand in context.Brands on car.BrandId equals brand.BrandId
-							 join color in context.Colors on car.ColorId equals color.ColorId
-							 where car.Id == carId
-							 select new CarDetailDto
-							 {
-								 CarId = car.Id,
-								 BrandName = brand.BrandName,
-								 CarName = car.CarName,
-								 ColorName = color.ColorName,
-								 DailyPrice = car.DailyPrice,
-								 ModelYear = car.ModelYear,
+								 Id = c.Id,
+								 BrandId = b.Id,
+								 ColorId = a.Id,
+								 CarName = c.CarName,
+								 BrandName = b.BrandName,
+								 ColorName = a.ColorName,
+								 ModelYear = c.ModelYear,
+								 DailyPrice = c.DailyPrice,
+								 Description = c.Description,
 							 };
 				return result.ToList();
 			}

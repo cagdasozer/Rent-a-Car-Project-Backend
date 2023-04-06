@@ -16,10 +16,9 @@ namespace WebAPI.Controllers
 			_customerService = customerService;
 		}
 
-		[HttpGet("GetAll")]
+		[HttpGet("getall")]
 		public IActionResult GetAll()
 		{
-			Thread.Sleep(1000);
 			var result = _customerService.GetAll();
 			if (result.Success)
 			{
@@ -28,8 +27,18 @@ namespace WebAPI.Controllers
 			return BadRequest(result);
 		}
 
-		
-		[HttpPost("Add")]
+		[HttpGet("getbycustomerid")]
+		public IActionResult GetByBrandId(int customerId)
+		{
+			var result = _customerService.GetCustomerById(customerId);
+			if (result.Success)
+			{
+				return Ok(result);
+			}
+			return BadRequest(result);
+		}
+
+		[HttpPost("add")]
 		public IActionResult Add(Customer customer)
 		{
 			var result = _customerService.Add(customer);
@@ -40,11 +49,10 @@ namespace WebAPI.Controllers
 			return BadRequest(result);
 		}
 
-		//SORRRR
-		[HttpPost("Delete")]
-		public IActionResult Delete(Customer customer)
+		[HttpPost("update")]
+		public IActionResult Update(Customer customer)
 		{
-			var result = _customerService.Delete(customer);
+			var result = _customerService.Update(customer);
 			if (result.Success)
 			{
 				return Ok(result);
@@ -52,10 +60,10 @@ namespace WebAPI.Controllers
 			return BadRequest(result);
 		}
 
-		[HttpPost("Update")]
-		public IActionResult Update(Customer customer)
+		[HttpDelete("delete")]
+		public IActionResult Delete(Customer customer)
 		{
-			var result = _customerService.Update(customer);
+			var result = _customerService.Delete(customer);
 			if (result.Success)
 			{
 				return Ok(result);

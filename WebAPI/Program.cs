@@ -16,7 +16,7 @@ using System.Text;
 
 namespace WebAPI
 {
-	public class Program
+    public class Program
 	{
 		public static void Main(string[] args)
 		{
@@ -70,11 +70,15 @@ namespace WebAPI
 				app.UseSwaggerUI();
 			}
 
-			app.UseStaticFiles();
+			app.ConfigureCustomExceptionMiddleware();
 
-			app.UseCors(builder => builder.WithOrigins("http://localhost:56582").AllowAnyHeader());
+			app.UseCors(builder => builder.WithOrigins("http://localhost:4200").AllowAnyHeader());
 
 			app.UseHttpsRedirection();
+
+			app.UseStaticFiles();
+
+			app.UseRouting();
 
 			app.UseAuthentication();//girmek için key (kimlik doðrulama)
 			app.UseAuthorization(); //girdikten sonra ne yapabiliriz (yetki)

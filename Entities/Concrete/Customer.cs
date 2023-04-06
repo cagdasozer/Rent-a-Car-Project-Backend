@@ -14,5 +14,7 @@ namespace Entities.Concrete
 		public int UserId { get; set; }
 
 		public string CompanyName { get; set; }
+
+		public int FindexPoint { get; set; }
 	}
 }

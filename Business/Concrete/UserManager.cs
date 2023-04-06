@@ -3,9 +3,12 @@ using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
+using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,50 +26,60 @@ namespace Business.Concrete
 			_userDal = userDal;
 		}
 
-		//[SecuredOperation("admin")]
-		public List<OperationClaim> GetClaims(User user)
+		public void Add(User user)
 		{
-			return _userDal.GetClaims(user);
+			_userDal.Add(user);
 		}
 
-		//[SecuredOperation("admin,moderator")]
-		public User GetByMail(string email)
+		public IResult Delete(User user)
 		{
-			return _userDal.Get(u => u.Email == email);
+			_userDal.Delete(user);
+			return new SuccessResult(Messages.UserDeleted);
 		}
 
-		//[SecuredOperation("admin,moderator")]
 		public IDataResult<List<User>> GetAll()
 		{
 			return new SuccessDataResult<List<User>>(_userDal.GetAll(), Messages.UsersListed);
 		}
 
-		//[SecuredOperation("admin,moderator")]
-		[ValidationAspect(typeof(UserValidator))]
-		public void Add(User user)
+		public IDataResult<User> GetByEmailWithResult(string email)
 		{
-			_userDal.Add(user);
-			new SuccessResult(Messages.UserAdded);
+			var result = GetByMail(email);
+			if (result == null)
+			{
+				return new ErrorDataResult<User>(Messages.UserNotFound);
+			}
+			return new SuccessDataResult<User>(result);
+		}
+	
+		public IDataResult<User> GetById(int userId)
+		{
+			return new SuccessDataResult<User>(_userDal.Get(u => u.Id == userId));
+		}
+		
+		public User GetByMail(string email)
+		{
+			return _userDal.Get(u => u.Email == email);
 		}
 
-		//[SecuredOperation("admin")]
+		public List<OperationClaim> GetClaims(User user)
+		{
+			return _userDal.GetClaims(user);
+		}
+
 		public IResult Update(User user)
 		{
 			_userDal.Update(user);
 			return new SuccessResult(Messages.UserUpdated);
 		}
 
-		//[SecuredOperation("admin")]
-		public IResult Delete(int id)
+		public IResult UpdateUserNames(User user)
 		{
-			var delete = _userDal.Get(u => u.Id == id);
-			if (delete != null)
-			{
-				_userDal.Delete(delete);
-				return new SuccessResult(Messages.UserDeleted);
-			}
-			return new ErrorResult(Messages.UserNotFound);
-			
+			var updatedUser = _userDal.Get(u => u.Id == user.Id);
+			updatedUser.FirstName = user.FirstName;
+			updatedUser.LastName = user.LastName;
+			_userDal.Update(updatedUser);
+			return new SuccessResult(Messages.UserUpdated);
 		}
 	}
 }

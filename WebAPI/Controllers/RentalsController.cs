@@ -16,10 +16,9 @@ namespace WebAPI.Controllers
 			_rentalService = rentalService;
 		}
 
-		[HttpGet("GetAll")]
+		[HttpGet("getall")]
 		public IActionResult GetAll()
 		{
-			Thread.Sleep(1000);
 			var result = _rentalService.GetAll();
 			if (result.Success)
 			{
@@ -28,8 +27,30 @@ namespace WebAPI.Controllers
 			return BadRequest(result);
 		}
 
+		[HttpPost("rulesforadding")]
+		public IActionResult RulesForAdding(Rental rental)
+		{
+			var result = _rentalService.RulesForAdding(rental);
 
-		[HttpPost("Add")]
+			if (result.Success)
+			{
+				return Ok(result);
+			}
+			return BadRequest(result);
+		}
+
+		[HttpGet("getrentaldetails")]
+		public IActionResult GetRentalDetails()
+		{
+			var result = _rentalService.GetRentalDetails();
+			if (result.Success)
+			{
+				return Ok(result);
+			}
+			return BadRequest(result);
+		}
+
+		[HttpPost("add")]
 		public IActionResult Add(Rental rental)
 		{
 			var result = _rentalService.Add(rental);
@@ -40,18 +61,7 @@ namespace WebAPI.Controllers
 			return BadRequest(result);
 		}
 
-		[HttpPost("Delete")]
-		public IActionResult Delete(Rental rental)
-		{
-			var result = _rentalService.Delete(rental);
-			if (result.Success)
-			{
-				return Ok(result);
-			}
-			return BadRequest(result);
-		}
-
-		[HttpPost("Update")]
+		[HttpPost("update")]
 		public IActionResult Update(Rental rental)
 		{
 			var result = _rentalService.Update(rental);
@@ -62,5 +72,15 @@ namespace WebAPI.Controllers
 			return BadRequest(result);
 		}
 
+		[HttpDelete("delete")]
+		public IActionResult Delete(Rental rental)
+		{
+			var result = _rentalService.Delete(rental);
+			if (result.Success)
+			{
+				return Ok(result);
+			}
+			return BadRequest(result);
+		}
 	}
 }

@@ -19,11 +19,15 @@ namespace Business.Concrete
 	{
 		private IUserService _userService;
 		private ITokenHelper _tokenHelper;
+		private ICustomerService _customerService;
+		private IClaimService _claimService;
 
-		public AuthManager(IUserService userService, ITokenHelper tokenHelper)
+		public AuthManager(IUserService userService, ITokenHelper tokenHelper, ICustomerService customerService, IClaimService claimService)
 		{
 			_userService = userService;
 			_tokenHelper = tokenHelper;
+			_customerService = customerService;
+			_claimService = claimService;
 		}
 
 		public IDataResult<AccessToken> CreateAccessToken(User user)
@@ -35,7 +39,7 @@ namespace Business.Concrete
 
 		public IDataResult<User> Login(UserForLoginDto userForLoginDto)
 		{
-			var userToCheck = _userService.GetByMail(userForLoginDto.Email);
+			var userToCheck = _userService.GetByEmail(userForLoginDto.Email);
 			if (userToCheck == null)
 			{
 				return new ErrorDataResult<User>(Messages.UserNotFound);
@@ -63,36 +67,14 @@ namespace Business.Concrete
 				Status = true
 			};
 			_userService.Add(user);
+			_customerService.AddUserId(user);
+			_claimService.AddUserClaim(user);
 			return new SuccessDataResult<User>(user, Messages.UserRegistered);
-		}
-
-		public IDataResult<User> UpdatePassword(UserForPasswordDto userForPasswordDto, string newPassword)
-		{
-			//Business Rules
-			byte[] passwordHash, passwordSalt;
-			HashingHelper.CreatePasswordHash(newPassword, out passwordHash, out passwordSalt);
-			var updatedUser = _userService.GetById(userForPasswordDto.UserId).Data;
-
-			if (!HashingHelper.VerifyPasswordHash(userForPasswordDto.OldPassword, updatedUser.PasswordHash, updatedUser.PasswordSalt))
-			{
-				return new ErrorDataResult<User>(Messages.PasswordError);
-			}
-
-			if (!userForPasswordDto.NewPassword.Equals(userForPasswordDto.RepeatNewPassword))
-			{
-				return new ErrorDataResult<User>("Şifre tekrarı yanlış!");
-			};
-
-			updatedUser.PasswordHash = passwordHash;
-			updatedUser.PasswordSalt = passwordSalt;
-
-			_userService.Update(updatedUser);
-			return new SuccessDataResult<User>(updatedUser, Messages.UserPasswordUpdated);
 		}
 
 		public IResult UserExists(string email)
 		{
-			if (_userService.GetByMail(email) != null)
+			if (_userService.GetByEmail(email) != null)
 			{
 				return new ErrorResult(Messages.UserAlreadyExists);
 			}

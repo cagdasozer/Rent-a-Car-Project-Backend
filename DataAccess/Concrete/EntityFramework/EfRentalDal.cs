@@ -31,8 +31,7 @@ namespace DataAccess.Concrete.EntityFramework
 							 {
 								 Id = rental.Id,
 								 BrandName = brand.BrandName,
-								 FirstName = user.FirstName,
-								 LastName = user.LastName,
+								 CustomerFullName = user.FirstName + " " + user.LastName,
 								 RentDate = rental.RentDate,
 								 ReturnDate = rental.ReturnDate
 							 };

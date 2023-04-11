@@ -27,11 +27,10 @@ namespace WebAPI.Controllers
 			return BadRequest(result);
 		}
 
-		[HttpPost("rulesforadding")]
-		public IActionResult RulesForAdding(Rental rental)
+		[HttpGet("getbyid")]
+		public IActionResult GetById(int id)
 		{
-			var result = _rentalService.RulesForAdding(rental);
-
+			var result = _rentalService.GetById(id);
 			if (result.Success)
 			{
 				return Ok(result);
@@ -39,10 +38,21 @@ namespace WebAPI.Controllers
 			return BadRequest(result);
 		}
 
-		[HttpGet("getrentaldetails")]
-		public IActionResult GetRentalDetails()
+		[HttpGet("getrentaldetail")]
+		public IActionResult GetRentalDetail()
 		{
-			var result = _rentalService.GetRentalDetails();
+			var result = _rentalService.GetRentalDetail();
+			if (result.Success)
+			{
+				return Ok(result);
+			}
+			return BadRequest(result);
+		}
+
+		[HttpGet("getlastrentalbycarid")]
+		public IActionResult GetLastRentalByCarId(int carId)
+		{
+			var result = _rentalService.GetLastRentalByCarId(carId);
 			if (result.Success)
 			{
 				return Ok(result);

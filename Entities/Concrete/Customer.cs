@@ -15,6 +15,6 @@ namespace Entities.Concrete
 
 		public string CompanyName { get; set; }
 
-		public int FindexPoint { get; set; }
+		public int FindeksScoreId { get; set; }
 	}
 }

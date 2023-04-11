@@ -24,7 +24,8 @@ namespace Business.Concrete
 			_brandDal = brandDal;
 		}
 
-		//[SecuredOperation("admin,moderator")]
+		[ValidationAspect(typeof(BrandValidator))]
+		[SecuredOperation("admin")]
 		public IResult Add(Brand brand)
 		{
 			_brandDal.Add(brand);
@@ -45,12 +46,13 @@ namespace Business.Concrete
 		}
 
 		//[SecuredOperation("admin,moderator,customer")]
-		public IDataResult<Brand> GetBrandById(int id)
+		public IDataResult<Brand> GetById(int id)
 		{
 			return new SuccessDataResult<Brand>(_brandDal.Get(b => b.Id == id));
 		}
 
-		//[SecuredOperation("admin,moderator")]
+		[ValidationAspect(typeof(BrandValidator))]
+		[SecuredOperation("admin")]
 		public IResult Update(Brand brand)
 		{
 			_brandDal.Update(brand);

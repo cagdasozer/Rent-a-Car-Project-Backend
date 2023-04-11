@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Core.Utilities.Results;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,14 @@ namespace Core.Utilities.Helpers.FileHelper
 {
 	public interface IFileHelper
 	{
-		string Upload(IFormFile file, string root);
-		void Delete(string root);
-		string Update(IFormFile file, string filePath, string root);
+		void DeleteOldFile(string directory);
+		void CreateFile(string directory, IFormFile file);
+		void CheckDirectoryExists(string directory);
+		IResult CheckFileTypeValid(string type);
+		IResult CheckFileExists(IFormFile file);
+		IResult Upload(IFormFile file);
+		IResult Update(IFormFile file, string imagePath);
+		IResult Delete(string path);
+
 	}
 }

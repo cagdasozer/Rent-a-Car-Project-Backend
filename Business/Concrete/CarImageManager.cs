@@ -22,8 +22,6 @@ namespace Business.Concrete
 		ICarImageDal _carImageDal;
 		IFileHelper _fileHelper;
 
-		private string ImagesPath = "wwwroot\\Uploads\\CarImages\\";
-
 		public CarImageManager(ICarImageDal carImageDal, IFileHelper fileHelper)
 		{
 			_carImageDal = carImageDal;
@@ -32,22 +30,39 @@ namespace Business.Concrete
 
 		public IResult Add(IFormFile file, CarImage carImage)
 		{
-			IResult result = BusinessRules.Run(CheckIfCarImageLimit(carImage.CarId));
+			IResult result = BusinessRules.Run(CheckImageCount(carImage.CarId));
+
 			if (result != null)
 			{
 				return result;
 			}
-			carImage.ImagePath = _fileHelper.Upload(file, ImagesPath);
-			carImage.Date = DateTime.Now;
+
+			var imageResult = _fileHelper.Upload(file);
+			if (!imageResult.Success)
+			{
+				return new ErrorResult(imageResult.Message);
+			}
+			carImage.ImagePath = imageResult.Message;
 			_carImageDal.Add(carImage);
-			return new SuccessResult("Resim başarıyla yüklendi");
+			return new SuccessResult(Messages.CarImageAdded);
+
 		}
 
 		public IResult Delete(CarImage carImage)
 		{
-			_fileHelper.Delete(ImagesPath + carImage.ImagePath);
+			var image = _carImageDal.Get(i => i.Id == carImage.Id);
+			if (image == null)
+			{
+				return new ErrorResult("Image not found");
+			}
+			_fileHelper.Delete(image.ImagePath);
 			_carImageDal.Delete(carImage);
-			return new SuccessResult();
+			return new SuccessResult(Messages.CarImageDeleted);
+		}
+
+		public IDataResult<CarImage> Get(int carImageid)
+		{
+			return new SuccessDataResult<CarImage>(_carImageDal.Get(i => i.Id == carImageid));
 		}
 
 		public IDataResult<List<CarImage>> GetAll()
@@ -55,53 +70,71 @@ namespace Business.Concrete
 			return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll());
 		}
 
-		public IDataResult<List<CarImage>> GetByCarId(int carId)
+		public IDataResult<List<CarImage>> GetImagesByCarId(int carId)
 		{
-			var result = BusinessRules.Run(CheckCarImage(carId));
+			IResult result = BusinessRules.Run(CheckIfCarImageNull(carId));
 			if (result != null)
 			{
-				return new ErrorDataResult<List<CarImage>>(GetDefaultImage(carId).Data);
+				return new ErrorDataResult<List<CarImage>>(result.Message);
 			}
-			return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(c => c.CarId == carId));
-		}
+			return new SuccessDataResult<List<CarImage>>(CheckIfCarImageNull(carId).Data);
 
-		public IDataResult<CarImage> GetByImageId(int ImageId)
-		{
-			return new SuccessDataResult<CarImage>(_carImageDal.Get(c => c.Id == ImageId));
 		}
 
 		public IResult Update(IFormFile file, CarImage carImage)
 		{
-			carImage.ImagePath = _fileHelper.Update(file, ImagesPath + carImage.ImagePath, ImagesPath);
-			_carImageDal.Update(carImage);
-			return new SuccessResult();
-		}
-
-		//Rules
-
-		private IResult CheckIfCarImageLimit(int carId)
-		{
-			var result = _carImageDal.GetAll(c => c.CarId == carId).Count;
-			if (result > 5)
+			var isImage = _carImageDal.Get(i => i.Id == carImage.Id);
+			if (isImage == null)
 			{
-				return new ErrorResult();
+				return new ErrorResult("Fotoğraf Bulunamadı");
 			}
-			return new SuccessResult();
+			var updatedFile = _fileHelper.Update(file, isImage.ImagePath);
+			if (!updatedFile.Success)
+			{
+				return new ErrorResult(updatedFile.Message);
+			}
+			carImage.ImagePath = updatedFile.Message;
+			_carImageDal.Update(carImage);
+			return new SuccessResult(Messages.CarImageUpdated);
 		}
-		private IDataResult<List<CarImage>> GetDefaultImage(int carId)
+
+
+		//RULES
+
+		public IDataResult<List<CarImage>> CheckIfCarImageNull(int carId)
 		{
-			List<CarImage> carImage = new List<CarImage>();
-			carImage.Add(new CarImage { CarId = carId, Date = DateTime.Now, ImagePath = "DefaultImage.png" });
-			return new SuccessDataResult<List<CarImage>>(carImage);
+			try
+			{
+				string path = @"DefaultImage.jpg";
+				var result = _carImageDal.GetAll(i => i.CarId == carId).Any();
+				if (!result)
+				{
+					List<CarImage> carImage = new List<CarImage>();
+					carImage.Add(new CarImage { CarId = carId, ImagePath = path, Date = DateTime.Now });
+					return new SuccessDataResult<List<CarImage>>(carImage);
+				}
+			}
+			catch (Exception exception)
+			{
+
+				return new ErrorDataResult<List<CarImage>>(exception.Message);
+			}
+
+			return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(i => i.CarId == carId).ToList());
 		}
-		private IResult CheckCarImage(int carId)
+
+
+		public IResult CheckImageCount(int carId)
 		{
-			var result = _carImageDal.GetAll(c => c.CarId == carId).Count;
-			if (result > 0)
+			if (_carImageDal.GetAll(i => i.CarId == carId).Count < 5)
 			{
 				return new SuccessResult();
+
 			}
-			return new ErrorResult();
+			else
+			{
+				return new ErrorResult("A car can have at most 5 pictures");
+			}
 		}
 	}
 }

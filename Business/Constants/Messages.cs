@@ -16,6 +16,10 @@ namespace Business.Constants
 		public static string RentalAdded = "Rental eklendi";
 		public static string UserAdded = "Kullanıcı eklendi";
 		public static string CustomerAdded = "Müşteri eklendi";
+		public static string CarImageAdded = "Araba resmi eklendi.";
+		public static string CreditCardAdded = "Kredi kartı eklendi";
+		public static string FindeksScoreAdded = "Findeks skoru eklendi";
+		public static string PaymentAdded = "Ödeme alındı";
 
 		public static string CarUpdated = "Araba güncellendi";
 		public static string BrandUpdated = "Marka güncellendi";
@@ -23,6 +27,9 @@ namespace Business.Constants
 		public static string RentalUpdated = "Rental güncellendi";
 		public static string UserUpdated = "Kullanıcı güncellendi";
 		public static string CustomerUpdated = "Müşteri güncellendi";
+		public static string CarImageUpdated = "Araba resmi güncellendi";
+		public static string CreditCardUpdated = "Kredi kartı güncellendi";
+		public static string FindeksScoreUpdated = "Findeks skoru güncellendi";
 
 		public static string CarDeleted = "Araba silindi";
 		public static string BrandDeleted = "Marka silindi";
@@ -31,8 +38,15 @@ namespace Business.Constants
 		public static string RentalDeleted = "Rental silindi";
 		public static string UserDeleted = "Kullanıcı silindi";
 		public static string CustomerDeleted = "Müşteri silindi";
+		public static string CarImageDeleted = "Araba resmi silindi";
+		public static string CreditCardDeleted = "Kredi kartı silindi";
+		public static string FindeksScoreDeleted = "Findeks skoru silindi";
+
 		public static string MaintenanceTime = "Sistem Bakımda!";
 		public static string DescriptionInvalid = "Açıklama en az 10 karakter içerebilir!";
+		public static string FindeksScoreIsInsufficient = "Findeks skoru yetersiz";
+		public static string CarHired = "Araba kiralandı";
+		public static string CarNotReturned = "Araba geri teslim edilmedi";
 
 		public static string CarsListed = "Arabalar listelendi";
 		public static string BrandsListed = "Markalar listelendi";

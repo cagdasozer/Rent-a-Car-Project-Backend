@@ -12,45 +12,105 @@ namespace Core.Utilities.Helpers.FileHelper
 {
 	public class FileHepler : IFileHelper
 	{
-		public void Delete(string filePath)  // Buradaki string filePath; "CarImageManager" dan gelen dosyanin kaydedildiği adres ve adı
+
+		private static string _currentDirectory = Environment.CurrentDirectory + @"\wwwroot";
+		private static string _folderName = @"\uploads\carImages\";
+
+
+		public void CheckDirectoryExists(string directory)
 		{
-			if (File.Exists(filePath))  // Gelen adreste dosyanın olup olmadığını kontrol ediyoruz.
+			if (!Directory.Exists(directory))
 			{
-				File.Delete(filePath);  // Eğer dosya var ise siliniyor.
+				Directory.CreateDirectory(directory);
 			}
 		}
 
-		public string Update(IFormFile file, string filePath, string root)
+		public IResult CheckFileExists(IFormFile file)
 		{
-			if (File.Exists(filePath))  // Gelen adreste dosyanın olup olmadığını kontrol ediyoruz.
+			if (file.Length > 0 && file != null)
 			{
-				File.Delete(filePath);  // Eğer dosya var ise siliniyor.
+				return new SuccessResult();
 			}
-			return Upload(file, root);  // Eski dosya silindikten sonra yerine geçecek yeni dosya için Upload metodu ile yeni dosyayı ekliyoruz.
+			return new ErrorResult("File not found");
 		}
 
-		public string Upload(IFormFile file, string root)
+		public IResult CheckFileTypeValid(string type)
 		{
-			if (file.Length > 0)  // Dosyanın gönderildiği dosya uzunluğundan kontrol ediliyor.
+			if (type != ".png" && type != ".jpeg" && type != ".jpg")
 			{
-				if (!Directory.Exists(root))
-				{
-					// Directory; System.IO'nun bir class'ıdır. Buradaki işlem tam olarak şu. Bu Upload metodumun parametresi olan string root CarManager'dan gelmekte
-					// CarImageManager içerisine girdiğinizde buraya parametre olarak *PathConstants.ImagesPath* böyle bir şey gönderilidğini görürsünüz. PathConstants clası içerisine girdiğinizde string bir ifadeyle bir dizin adresi var. O adres bizim yükleyeceğimiz dosyaların kayıt edileceği adres burada *Check if a directory Exists* ifadesi şunu belirtiyor dosyanın kaydedileceği adres dizini var mı? varsa if yapısının kod bloğundan ayrılır eğer yoksa içinde ki kodda dosyaların kayıt edilecek dizini oluşturur.
-					Directory.CreateDirectory(root);
-				}
-				string extension = Path.GetExtension(file.FileName);  // Seçmiş olduğumuz dosyanın uzantısını elde ediyoruz.
-				string guid = Guid.NewGuid().ToString();  // Core.Utilities.Helpers.GuidHelper klasöründeki GuidManager class'ında oluşturduğumuz eşsiz ismi alıyoruz.
-				string filePath = guid + extension;  // İsim ile uzantıyı birleştiriyoruz.
-
-				using (FileStream fileStream = File.Create(root + filePath))  // FileStream class'ının bir örneği oluşturuldu, sonrasında ise "root + filePath" yolunda bir dosya oluşturur.
-				{
-					file.CopyTo(fileStream);  // Yukarıdan gelen IFormFile türündeki file dosyasını nereye kopyalayacağını belirttik.
-					fileStream.Flush();  // Arabellekte silme.
-					return filePath;  // Sql servere dosya eklenirken adı ile eklenmesi için dosyamızın tam adını geri döndürüyoruz.
-				}
+				return new ErrorResult("File type is invalid");
 			}
-			return null;
+
+			return new SuccessResult();
+		}
+
+		public void CreateFile(string directory, IFormFile file)
+		{
+			using (FileStream fileStream = File.Create(directory))
+			{
+				file.CopyTo(fileStream);
+				fileStream.Flush();
+			}
+		}
+
+		public IResult Delete(string path)
+		{
+			DeleteOldFile(_currentDirectory + path);
+			return new SuccessResult();
+		}
+
+		public void DeleteOldFile(string directory)
+		{
+			if (File.Exists(directory))
+			{
+				File.Delete(directory);
+			}
+		}
+
+		public IResult Update(IFormFile file, string imagePath)
+		{
+			var fileExist = CheckFileExists(file);
+			if (fileExist.Message != null)
+			{
+				return new ErrorResult(fileExist.Message);
+			}
+			var type = Path.GetFileName(file.FileName);
+			var checkFileType = CheckFileTypeValid(type);
+			var createRandomName = Guid.NewGuid().ToString();
+
+
+			if (checkFileType.Message != null)
+			{
+				return new ErrorResult(checkFileType.Message);
+			}
+
+			DeleteOldFile(_currentDirectory + imagePath);
+			CheckDirectoryExists(_currentDirectory + _folderName);
+			CreateFile(_currentDirectory + _folderName + createRandomName + type, file);
+			return new SuccessResult(_folderName + createRandomName + type);
+		}
+
+		public IResult Upload(IFormFile file)
+		{
+			var fileExist = CheckFileExists(file);
+			if (fileExist.Message != null)
+			{
+				return new ErrorResult(fileExist.Message);
+			}
+			var type = Path.GetExtension(file.FileName);
+			var checkFileType = CheckFileTypeValid(type);
+			var createRandomName = Guid.NewGuid().ToString();
+
+
+			if (checkFileType.Message != null)
+			{
+				return new ErrorResult(checkFileType.Message);
+			}
+
+			CheckDirectoryExists(_currentDirectory + _folderName);
+			CreateFile(_currentDirectory + _folderName + createRandomName + type, file);
+			return new SuccessResult(createRandomName + type);
 		}
 	}
 }
+

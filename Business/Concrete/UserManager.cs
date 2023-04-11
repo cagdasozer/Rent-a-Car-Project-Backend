@@ -26,6 +26,7 @@ namespace Business.Concrete
 			_userDal = userDal;
 		}
 
+		[ValidationAspect(typeof(UserValidator))]
 		public void Add(User user)
 		{
 			_userDal.Add(user);
@@ -42,24 +43,14 @@ namespace Business.Concrete
 			return new SuccessDataResult<List<User>>(_userDal.GetAll(), Messages.UsersListed);
 		}
 
-		public IDataResult<User> GetByEmailWithResult(string email)
-		{
-			var result = GetByMail(email);
-			if (result == null)
-			{
-				return new ErrorDataResult<User>(Messages.UserNotFound);
-			}
-			return new SuccessDataResult<User>(result);
-		}
-	
-		public IDataResult<User> GetById(int userId)
-		{
-			return new SuccessDataResult<User>(_userDal.Get(u => u.Id == userId));
-		}
-		
-		public User GetByMail(string email)
+		public User GetByEmail(string email)
 		{
 			return _userDal.Get(u => u.Email == email);
+		}
+
+		public IDataResult<User> GetByUserId(int id)
+		{
+			return new SuccessDataResult<User>(_userDal.Get(u => u.Id == id));
 		}
 
 		public List<OperationClaim> GetClaims(User user)
@@ -67,19 +58,26 @@ namespace Business.Concrete
 			return _userDal.GetClaims(user);
 		}
 
-		public IResult Update(User user)
+		public IDataResult<List<OperationClaim>> GetClaimsByUserId(int userId)
 		{
-			_userDal.Update(user);
-			return new SuccessResult(Messages.UserUpdated);
+			User user = _userDal.Get(u => u.Id == userId);
+			return new SuccessDataResult<List<OperationClaim>>(_userDal.GetClaims(user));
 		}
 
-		public IResult UpdateUserNames(User user)
+		public IDataResult<UserDetailDto> GetUserDetailsByEmail(string email)
 		{
-			var updatedUser = _userDal.Get(u => u.Id == user.Id);
-			updatedUser.FirstName = user.FirstName;
-			updatedUser.LastName = user.LastName;
-			_userDal.Update(updatedUser);
-			return new SuccessResult(Messages.UserUpdated);
+			return new SuccessDataResult<UserDetailDto>(_userDal.GetUserDetailsByEmail(email));
+		}
+
+		[ValidationAspect(typeof(UserValidator))]
+		public IResult Update(UserUpdateDto userUpdateDto)
+		{
+			var userForUpdate = GetByUserId(userUpdateDto.Id).Data;
+			userForUpdate.FirstName = userUpdateDto.FirstName;
+			userForUpdate.LastName = userUpdateDto.LastName;
+			userForUpdate.Email = userUpdateDto.Email;
+			_userDal.Update(userForUpdate);
+			return new SuccessResult();
 		}
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,10 +28,21 @@ namespace WebAPI.Controllers
 			return BadRequest(result);
 		}
 
-		[HttpGet("getbycustomerid")]
-		public IActionResult GetByBrandId(int customerId)
+		[HttpGet("getbyid")]
+		public IActionResult GetById(int id)
 		{
-			var result = _customerService.GetCustomerById(customerId);
+			var result = _customerService.GetById(id);
+			if (result.Success)
+			{
+				return Ok(result);
+			}
+			return BadRequest(result);
+		}
+
+		[HttpGet("getcustomerdetailsbyuserid")]
+		public IActionResult GetCustomerDetailsByUserId(int userId)
+		{
+			var result = _customerService.GetCustomerDetailsByUserId(userId);
 			if (result.Success)
 			{
 				return Ok(result);
@@ -50,9 +62,9 @@ namespace WebAPI.Controllers
 		}
 
 		[HttpPost("update")]
-		public IActionResult Update(Customer customer)
+		public IActionResult Update(CustomerUpdateDto customerUpdateDto)
 		{
-			var result = _customerService.Update(customer);
+			var result = _customerService.Update(customerUpdateDto);
 			if (result.Success)
 			{
 				return Ok(result);

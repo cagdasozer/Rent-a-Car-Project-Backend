@@ -27,10 +27,10 @@ namespace WebAPI.Controllers
 			return BadRequest(result);
 		}
 
-		[HttpGet("getbymail")]
-		public IActionResult GetByEmailWithResult(string email)
+		[HttpGet("getuserbyuserid")]
+		public IActionResult GetUserByUserId(int userId)
 		{
-			var result = _userService.GetByEmailWithResult(email);
+			var result = _userService.GetByUserId(userId);
 			if (result.Success)
 			{
 				return Ok(result);
@@ -38,10 +38,21 @@ namespace WebAPI.Controllers
 			return BadRequest(result);
 		}
 
-		[HttpGet("getbyid")]
-		public IActionResult GetById(int userId)
+		[HttpGet("getclaimsbyuserid")]
+		public IActionResult GetClaimsByUserId(int userId)
 		{
-			var result = _userService.GetById(userId);
+			var result = _userService.GetClaimsByUserId(userId);
+			if (result.Success)
+			{
+				return Ok(result);
+			}
+			return BadRequest(result);
+		}
+
+		[HttpGet("getuserdetailsbyemail")]
+		public IActionResult GetUserDetailsByEmail(string email)
+		{
+			var result = _userService.GetUserDetailsByEmail(email);
 			if (result.Success)
 			{
 				return Ok(result);
@@ -50,9 +61,9 @@ namespace WebAPI.Controllers
 		}
 
 		[HttpPost("update")]
-		public IActionResult Update(User user)
+		public IActionResult Update(UserUpdateDto userUpdateDto)
 		{
-			var result = _userService.Update(user);
+			var result = _userService.Update(userUpdateDto);
 			if (result.Success)
 			{
 				return Ok(result);
@@ -60,18 +71,7 @@ namespace WebAPI.Controllers
 			return BadRequest(result);
 		}
 
-		[HttpPost("updateusernames")]
-		public IActionResult UpdateUserNames(User user)
-		{
-			var result = _userService.UpdateUserNames(user);
-			if (result.Success)
-			{
-				return Ok(result);
-			}
-			return BadRequest(result);
-		}
-
-		[HttpDelete("delete")]
+		[HttpPost("delete")]
 		public IActionResult Delete(User user)
 		{
 			var result = _userService.Delete(user);

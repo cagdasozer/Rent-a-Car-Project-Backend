@@ -47,6 +47,7 @@ Image for Usage
 
 Layers
 🗃 Entities Layer
+
     📂 Concrete
          📃 Brand.cs
          📃 Car.cs
@@ -57,6 +58,7 @@ Layers
          📃 FindeksScore.cs
          📃 Payment.cs
          📃 Rental.cs
+         
     📂 DTOs
          📃 CarDetailDto.cs
          📃 CarFilter.cs
@@ -69,6 +71,7 @@ Layers
 
 
 🗃 Business Layer
+
      📂 Abstract
          📃 IAuthService.cs
          📃 IBrandService.cs
@@ -82,9 +85,11 @@ Layers
          📃 IPaymentService.cs
          📃 IRentalService.cs
          📃 IUserService.cs
+         
     📂 BusinessAspect
         📂 Autofac
              📃 SecuredOperation.cs
+             
     📂 Concrete
          📃 AuthManager.cs
          📃 BrandManager.cs
@@ -98,11 +103,14 @@ Layers
          📃 PaymentManager.cs
          📃 RentalManager.cs
          📃 UserManager.cs
+         
      📂 Constants
          📃 Messages.cs
+         
      📂 DependencyResolvers
          📂 Autofac
              📃 AutofacBusinessModule.cs
+             
      📂 ValidationRules
          📂 FluentValidation
              📃 BrandValidator.cs
@@ -115,6 +123,7 @@ Layers
 
 
 🗃 Data Access Layer
+
     📂 Abstract
          📃 IBrandDal.cs
          📃 ICarDal.cs
@@ -127,6 +136,7 @@ Layers
          📃 IPaymentDal.cs
          📃 IRentalDal.cs
          📃 IUserDal.cs
+         
      📂 Concrete
              📂 EntityFramework
                  📃 EfBrandDal.cs
@@ -155,6 +165,7 @@ Layers
                  📃 TransactionScopeAscpect.cs
             📂 Validation
                  📃 ValidationAspect.cs
+                 
     📂 CrossCuttingConcerns
         📂 Caching
           📂 Microsoft
@@ -162,12 +173,15 @@ Layers
            📃 ICacheManager.cs
          📂 Validation
             📃 ValidationTool.cs   
+            
     📂 DataAccess
       📂 EntityFramework
              📃 EfEntityRepositoryBase.cs
          📃 IEntityRepository.cs
+         
     📂 DependencyResolvers
          📃 CoreModule.cs
+         
     📂 Entities
         📂 Abstract
             📃 IDto.cs
@@ -176,6 +190,7 @@ Layers
              📃 OperationClaim.cs
              📃 User.cs
              📃 UserOperationClaim.cs
+             
     📂 Extensions
          📃 ClaimExtensions.cs
          📃 ClaimsPrincipalExtensions.cs
@@ -183,6 +198,7 @@ Layers
          📃 ExceptionMiddleware.cs
          📃 ExceptionMiddlewareExtensions.cs
          📃 ServiceCollectionExtensions.cs
+         
     📂 Utilities
         📂 Business
              📃 BusinessRules.cs
@@ -190,15 +206,19 @@ Layers
           📂 FileHelper
              📃 FileHelper.cs
              📃 IFileHelper.cs
+             
         📂 Interceptors
              📃 AspectInterceptorSelector.cs
              📃 MethodInterception.cs
              📃 MethodInterceptionBaseAttribute.cs
+             
         📂 IoC
              📃 ICoreModule.cs
              📃 ServiceTool.cs
+             
         📂 Messages
              📃 AspectMessages.cs
+             
         📂 Results
              📃 IDataResult.cs
              📃 DataResult.cs
@@ -208,6 +228,7 @@ Layers
              📃 Result.cs
              📃 SuccessResult.cs
              📃 ErrorResult.cs
+             
         📂 Security
             📂 Encryption
                  📃 SecurityKeyHelper.cs

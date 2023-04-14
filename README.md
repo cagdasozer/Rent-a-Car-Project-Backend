@@ -37,8 +37,6 @@ License
 Installation 
 # Clone to repository
 $ git clone https://github.com/cagdasozer/Rent-a-Car-Project-Backend.git
-# Go to the folder you cloned
-$ cd re-cap-project-with-csharp
 
 # Install dependencies
 $ dotnet restore

@@ -47,6 +47,7 @@ Image for Usage
 
 Layers
 🗃 Entities Layer
+
     📂 Concrete
          📃 Brand.cs
          📃 Car.cs

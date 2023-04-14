@@ -57,7 +57,6 @@ Layers
          📃 FindeksScore.cs
          📃 Payment.cs
          📃 Rental.cs
-
     📂 DTOs
          📃 CarDetailDto.cs
          📃 CarFilter.cs
@@ -83,11 +82,9 @@ Layers
          📃 IPaymentService.cs
          📃 IRentalService.cs
          📃 IUserService.cs
-
     📂 BusinessAspect
         📂 Autofac
              📃 SecuredOperation.cs
-
     📂 Concrete
          📃 AuthManager.cs
          📃 BrandManager.cs
@@ -101,14 +98,11 @@ Layers
          📃 PaymentManager.cs
          📃 RentalManager.cs
          📃 UserManager.cs
-
      📂 Constants
          📃 Messages.cs
-
      📂 DependencyResolvers
          📂 Autofac
              📃 AutofacBusinessModule.cs
-
      📂 ValidationRules
          📂 FluentValidation
              📃 BrandValidator.cs
@@ -133,7 +127,6 @@ Layers
          📃 IPaymentDal.cs
          📃 IRentalDal.cs
          📃 IUserDal.cs
-
      📂 Concrete
              📂 EntityFramework
                  📃 EfBrandDal.cs
@@ -162,7 +155,6 @@ Layers
                  📃 TransactionScopeAscpect.cs
             📂 Validation
                  📃 ValidationAspect.cs
-
     📂 CrossCuttingConcerns
         📂 Caching
           📂 Microsoft
@@ -191,7 +183,6 @@ Layers
          📃 ExceptionMiddleware.cs
          📃 ExceptionMiddlewareExtensions.cs
          📃 ServiceCollectionExtensions.cs
-
     📂 Utilities
         📂 Business
              📃 BusinessRules.cs
